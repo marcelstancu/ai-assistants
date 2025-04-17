@@ -1,0 +1,17 @@
+c:
+  - cov-configure --config coverity_config/coverity.xml --template --compiler gcc --comptype gcc
+  - cov-build --config coverity_config/coverity.xml --dir idir make
+  - cov-manage-emit --dir idir list
+  - cov-analyze --dir idir --concurrency --security --rule --enable-constraint-fpp --enable-fnptr --enable-virtual
+  - cov-format-errors --dir idir --json-output-v9 local_report.json
+  - cov-format-errors --dir idir --text-output-style oneline > local_report.txt
+
+python:
+  - cov-configure --config coverity_config/coverity.xml --python
+  - git ls-files | grep -E '\.py$|\.pylint$|\.pycode$|\.py.*\.sh$' > py_scm_files.lst
+  - cov-build --config coverity_config/coverity.xml --dir idir --no-command --fs-capture-list py_scm_files.lst
+  - cov-manage-emit --dir idir list
+  - cov-manage-emit --dir idir --tu-pattern "file (\". *\")" print-source-files
+  - cov-analyze --dir idir --enable-default --webapp-security --enable-audit-checkers
+  - cov-format-errors --dir idir --json-output-v9 local_report.json
+  - cov-format-errors --dir idir --text-output-style oneline > local_report.txt

@@ -1,0 +1,13 @@
+[ai_prompts]
+
+[[ai_prompts.prompts]]
+id = "coverity_issue_suggest_fix"
+description = "Analyze the Coverity issue reported and the corresponding code. Provide precise fixes and preserve functionality"
+prompt = """
+Read the Coverity issue and the related code. Act on the following:
+1. Generate a precise fix code line for the identified issue while maintaining the original code style and indentation.
+2. Keep the fix relevant to the existing code without making assumptions beyond the provided context.
+3. Output should follow the structured JSON format with 'fix_suggested'
+4. Do not add unnecessary information
+5. Validate the generated JSON output to ensure correctness"""
+parameters = { issue = "{issue}", code_with_issue = "{code_with_issue}" }

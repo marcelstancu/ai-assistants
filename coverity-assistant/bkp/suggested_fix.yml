@@ -1,0 +1,29 @@
+suggestion_content:
+  - issue: Buffer overflow due to unsafe use of gets function
+    explanation: The gets function is unsafe because it does not check the size of the input, which can lead to buffer overflow. It should be replaced with fgets to ensure the input does not exceed the buffer size.
+    existing_code: |
+      void vulnerableFunction() {
+          char buffer[10];
+          gets(buffer); // This function is unsafe and can cause buffer overflow
+      }
+    improved_code: |
+      void vulnerableFunction() {
+          char buffer[10];
+          fgets(buffer, sizeof(buffer), stdin); // Use fgets to prevent buffer overflow
+      }
+  - issue: Memory leak due to allocated memory not being freed
+    explanation: The memory allocated using malloc in memoryLeakFunction is not freed, leading to a memory leak. The allocated memory should be freed before the function exits.
+    existing_code: |
+      void memoryLeakFunction() {
+          char* leak = (char*)malloc(100);
+          strcpy(leak, "This is a memory leak example");
+          // Memory is not freed
+      }
+    improved_code: |
+      void memoryLeakFunction() {
+          char* leak = (char*)malloc(100);
+          if (leak != NULL) {
+              strcpy(leak, "This is a memory leak example");
+              free(leak); // Free the allocated memory
+          }
+      }
